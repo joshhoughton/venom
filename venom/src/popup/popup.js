@@ -7,14 +7,13 @@ document.addEventListener("DOMContentLoaded", function(){
         timestamps = result.timestamps
     
         // Sort timestamps by creation timestamp
-        timestamps.sort((a,b) => (a[2] > b[2]) ? 1 : ((b[2] > a[2]) ? -1 : 0))
+        timestamps.sort((a,b) => (a[2] < b[2]) ? 1 : ((b[2] < a[2]) ? -1 : 0))
     
         for (let index = 0; index < timestamps.length; index++) {
             const element = timestamps[index];
             // Convert timestamp to date string
             timestamps[index][2] = new Date(element[2]).toLocaleString()
     
-            console.log(timestamps[index])
     
             let row = table.insertRow();
 

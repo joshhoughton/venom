@@ -8,7 +8,7 @@ function setBadge(badge){
     chrome.browserAction.setBadgeText({
         text: badge.toString()
     })
-    chrome.storage.local.set({badge: badge}, () => {})
+    chrome.storage.local.set({badge}, () => {})
 }
 
 getBadge((result) => {
@@ -26,7 +26,6 @@ function saveTimestamp(result) {
         storage. 
     */
 
-    console.log(result)
 
     timestamp = result[0][0]
 
@@ -61,7 +60,6 @@ function saveTimestamp(result) {
 
         
     } else if (url.includes("soundcloud.com")){
-        console.log("FUCIGN SOUDNCLOUD")
         timestampString = timestamp.toString()
 
         url = result[0][2] + `#t=` + timestampString
@@ -91,6 +89,10 @@ function saveTimestamp(result) {
 
     getBadge((result) => {
         badge = result.badge
+
+        if (badge === ''){
+            badge = 0;
+        }
 
         setBadge(badge + 1)
     })
@@ -145,7 +147,7 @@ chrome.commands.onCommand.addListener(function(command) {
 
 
 chrome.browserAction.onClicked.addListener(function(tab) {
-    setBadge(0);
+    setBadge("");
     chrome.tabs.create({url: chrome.runtime.getURL("src/popup/popup.html")})
 
     `chrome.storage.local.get(['timestamps'], function(result) {
