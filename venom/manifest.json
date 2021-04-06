@@ -1,6 +1,6 @@
 {
   "name": "Venom - Hotkey Bookmarker for YT & SC",
-  "version": "0.0.3",
+  "version": "0.1",
   "manifest_version": 2,
   "description": "Instantly save the timestamp of a playing YouTube video or SoundCloud track, on screen or in the background.",
   "content_security_policy": "script-src 'self' https://maxcdn.bootstrapcdn.com https://ajax.googleapis.com; object-src 'self';",
@@ -12,7 +12,7 @@
   "background": {
     "scripts": [
         "src/bg/background.js",
-        "src/popup/moment.js"
+        "src/bookmarks/moment.js"
     ]
   },
   "browser_action": {

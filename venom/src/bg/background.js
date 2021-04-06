@@ -148,7 +148,7 @@ chrome.commands.onCommand.addListener(function(command) {
 
 chrome.browserAction.onClicked.addListener(function(tab) {
     setBadge("");
-    chrome.tabs.create({url: chrome.runtime.getURL("src/popup/popup.html")})
+    chrome.tabs.create({url: chrome.runtime.getURL("src/bookmarks/bookmarks.html")})
 
     `chrome.storage.local.get(['timestamps'], function(result) {
         timestamps = result.timestamps

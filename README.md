@@ -5,4 +5,33 @@
     <img src="venom/icons/icon128.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">Venom</h3>
+  <h2 align="center">Venom</h2>
+
+  <p align="center">
+    Quick hotkey bookmarking for YouTube and SoundCloud.
+    <br />
+    <a href="https://chrome.google.com/webstore/detail/venom-hotkey-bookmarker-f/nlcikdibmohlofehpflokeedegjlmnmh"><strong>Install »</strong></a>
+    <br />
+    <br />
+
+  </p>
+  
+  
+    📦venom
+    ┣ 📂icons
+    ┃ ┗ 📜icon128.png
+    ┣ 📂src
+    ┃ ┣ 📂bg
+    ┃ ┃ ┣ 📜background.html
+    ┃ ┃ ┗ 📜background.js
+    ┃ ┣ 📂inject
+    ┃ ┃ ┗ 📜inject.js
+    ┃ ┗ 📂popup
+    ┃ ┃ ┣ 📜icon128.png
+    ┃ ┃ ┣ 📜moment.js
+    ┃ ┃ ┣ 📜popup.html
+    ┃ ┃ ┗ 📜popup.js
+    ┣ 📂_locales
+    ┃ ┗ 📂en
+    ┃ ┃ ┗ 📜messages.json
+    ┗ 📜manifest.json
