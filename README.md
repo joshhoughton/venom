@@ -5,10 +5,10 @@
     <img src="venom/icons/icon128.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h2 align="center">Venom</h2>
+  <h1 align="center">Venom</h1>
+  <h2 align="center">Quick hotkey bookmarking for YouTube and SoundCloud.</h2>
 
   <p align="center">
-    Quick hotkey bookmarking for YouTube and SoundCloud.
     <br />
     <a href="https://chrome.google.com/webstore/detail/venom-hotkey-bookmarker-f/nlcikdibmohlofehpflokeedegjlmnmh"><strong>Install »</strong></a>
     <br />

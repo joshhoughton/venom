@@ -4,17 +4,19 @@
   "manifest_version": 2,
   "description": "Instantly save the timestamp of a playing YouTube video or SoundCloud track, on screen or in the background.",
   "content_security_policy": "script-src 'self' https://maxcdn.bootstrapcdn.com https://ajax.googleapis.com; object-src 'self';",
-
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlcoshtReFunAaBJjZfIZ6DNWaF/1qXtIsAAii7AlTBzq5LcmMxrcsMi7gdIgjRRIL+tHX1Nv46FBe2Y9zvy8VqmJXZmQyQWiDAzdOUujeEqnPToPncDkxV+V3OZLRPwQaeOr1DgJsBOHRXnJ6rF2k/YJ1x8898zW8h3AGr8oU/euBnDIsJQ7H4ffyyJmAhWFILQAtteMVVoX7wNyXNEJGzHaSHndXsty6JnhZzo2pY2HQtySoZOzMxyOyl/hZS2dJl3OMx4mQX471vZcTD3bIONW3GvhGuvklpYBnAhqibwzAZelfhhmJiie/BsuqzPdafmrUW+uX90K/qBNf7YnRQIDAQAB",
   "icons": {
     "128": "icons/icon128.png"
   },
   "default_locale": "en",
   "background": {
     "scripts": [
-        "src/bg/background.js",
-        "src/bookmarks/moment.js"
+        "lib/spotify-web-api.js",
+        "lib/moment.js",
+        "src/bg/background.js"
     ]
   },
+  "options_page": "src/options/options.html",
   "browser_action": {
       "default_icon": "icons/icon128.png",
       "title": "See your Bookmarks"
@@ -22,11 +24,13 @@
   "permissions": [
     "*://*.youtube.com/watch?v=*",
     "*://*.soundcloud.com/*",
+    "https://accounts.spotify.com/authorize/*",
     "tabs",
     "downloads",
     "activeTab",
     "storage",
-    "notifications"
+    "notifications",
+    "identity"
   ],
 
   "commands": {
@@ -36,6 +40,13 @@
         "mac": "Alt+Q"
       },
       "description": "Save Timestamp of YouTube Video"
-    }
+    },
+    "record-spotify": {
+        "suggested_key": {
+          "default": "Alt+W",
+          "mac": "Alt+W"
+        },
+        "description": "Save Timestamp of Spotify Track"
+      }
   }
 }
