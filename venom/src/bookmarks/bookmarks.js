@@ -42,11 +42,29 @@ document.addEventListener("DOMContentLoaded", function(){
             const element = timestamps[index];
             // Convert timestamp to date string
             //timestamps[index][2] = moment(element[2]).fromNow() //new Date(element[2]).toLocaleString()
-    
+            
+            console.log(element[3].toLowerCase())
+            if (element[3].toLowerCase().includes('spotify.com')) {
+                sourceLogoPath = "/icons/sources/spotify.svg"
+            }  
+            if (element[3].toLowerCase().includes('youtube.com')){
+                sourceLogoPath = "/icons/sources/youtube.svg"
+            }  
+            if (element[3].toLowerCase().includes('soundcloud.com')) {
+                sourceLogoPath = "/icons/sources/soundcloud.svg"
+            }
     
             let row = table.insertRow();
 
             let cell = row.insertCell();
+
+            let img = document.createElement('img')
+            img.src = sourceLogoPath
+            img.style = "height: 1.1em; text-align: center;"
+            cell.appendChild(img);
+
+            cell = row.insertCell();
+
             let aTag = document.createElement('a');
             aTag.setAttribute('href', element[3]);
             aTag.innerText = element[0];

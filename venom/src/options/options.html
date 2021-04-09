@@ -1,14 +1,121 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <title>Venom | Options</title>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src='/lib/spotify-web-api.js'></script>
   <script src='options.js'></script>
 
+  <style>
+    /* Remove the navbar's default margin-bottom and rounded borders */ 
+    .navbar {
+      margin-bottom: 0;
+      border-radius: 0;
+    }
+
+    body {
+        padding-top: 2%;
+    }
+    
+    /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+    .row.content {height: 450px}
+    
+    /* Set gray background color and 100% height */
+    .sidenav {
+      padding-top: 20px;
+      background-color: #f1f1f1;
+      height: 100%;
+    }
+    
+    /* Set black background color, white text and some padding */
+    footer {
+      background-color: #555;
+      color: white;
+      padding: 15px;
+    }
+    
+    /* On small screens, set height to 'auto' for sidenav and grid */
+    @media screen and (max-width: 767px) {
+      .sidenav {
+        height: auto;
+        padding: 15px;
+      }
+      .row.content {height:auto;} 
+    }
+
+    ol.breadcrumb {
+        padding: 10px;
+        padding-left: 20px;
+        list-style: none;
+        background-color: #eee;
+    }
+
+    div.card {
+        margin-bottom: 2em;
+    }
+  </style>
+
 </head>
 <body>
-    <button type="button" id="loginSpotifyButton">Login to Spotify</button>
+    
+
+
+  
+<div class="container-fluid mx-auto mt-5" style="width: 50%">    
+  <div class="row content">
+        <div class="container-fluid">
+
+            <ol class="breadcrumb font-weight-bold h2" style="margin-bottom: 2em;">
+                <img src="/icons/icon128.png" style="height: 1.1em; vertical-align: top; padding-right: 10px;">
+                <li class="breadcrumb-item font-weight-bold">Venom <span class="divider"></span></li>
+                <li class="breadcrumb-item font-weight-bold">Options</li>
+            </ol>
+  
+             
+
+            <div class="card">
+                <h3 class="card-header">
+                    <img src="/icons/sources/spotify.svg" style="height: 1.1em; vertical-align: center;">
+                    Spotify Integration
+                </h3>
+                <div class="card-body">
+                    <p class="card-text">Linking your Spotify account with Venom allows you to save the currently playing song to your bookmarks when the hotkey is pressed.</p>
+                    <button type="button" class="btn btn-success" id="loginSpotifyButton" style="margin-bottom: 0.5em;"></button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="card-header">
+                    🔎 Platforms to Scan
+                </h3>
+                <div class="card-body">
+                    <p class="card-text">Choose which platforms you want Venom to scan:</p>
+
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="spotifyToggle">
+                        <label class="form-check-label" for="flexSwitchCheckDefault">Spotify</label>
+                    </div>
+                        <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="youtubeToggle">
+                        <label class="form-check-label" for="flexSwitchCheckDefault">YouTube</label>
+                    </div>
+                        <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="soundcloudToggle">
+                        <label class="form-check-label" for="flexSwitchCheckDefault">SoundCloud</label>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        
+
+  </div>
+</div>
+
 
 </body>
 </html>
