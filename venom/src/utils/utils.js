@@ -43,8 +43,9 @@ Endpoint = {
 
 Parser = {
     parseYouTube: (result) => {
-        timestamp = result[0][0]
-        title = result[0][1].replace(/,/g, '.')
+        timestamp = result.timestamp
+        title = result.title.replace(/,/g, '.')
+        url = result.url
 
         // Remove YouTube notification count at the start of <title>
         if (title.startsWith("(")){
@@ -76,13 +77,14 @@ Parser = {
         ]
     },
     parseSoundCloud: (result) => {
-        timestamp = result[0][0]
+        timestamp = result.timestamp
+        title = result.title.replace(/,/g, '.')
+        url = result.url
 
-        title = result[0][1].replace(/,/g, '.')
 
         timestampString = timestamp.toString()
 
-        url = result[0][2] + `#t=` + timestampString
+        url = result.url + `#t=` + timestampString
 
         return [
             title,
@@ -114,4 +116,20 @@ Parser = {
         ]
     }
 
+}
+
+
+function noMusicFound(platforms){
+    platformsMessage = [
+        platforms.spotifyEnabled ? "Spotify" : "",
+        platforms.youtubeEnabled ? "YouTube" : "",
+        platforms.soundcloudEnabled ? "SoundCloud" : ""
+    ].filter(Boolean).join(", ")
+
+    chrome.notifications.create('', {
+        title: 'Error',
+        message: `Cannot find a playing instance of ${platformsMessage}.`,
+        type: 'basic',
+        iconUrl: 'icons/icon128.png'
+    })
 }

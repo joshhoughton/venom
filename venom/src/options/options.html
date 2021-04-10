@@ -31,12 +31,6 @@
       height: 100%;
     }
     
-    /* Set black background color, white text and some padding */
-    footer {
-      background-color: #555;
-      color: white;
-      padding: 15px;
-    }
     
     /* On small screens, set height to 'auto' for sidenav and grid */
     @media screen and (max-width: 767px) {
@@ -47,15 +41,23 @@
       .row.content {height:auto;} 
     }
 
-    ol.breadcrumb {
-        padding: 10px;
-        padding-left: 20px;
-        list-style: none;
-        background-color: #eee;
-    }
-
     div.card {
         margin-bottom: 2em;
+    }
+
+    .form-check {
+        margin-left: 1vw;
+    }
+
+    .btn-primary {
+        margin-left: 1vw;
+    }
+    .btn-success{
+        margin-left: 1vw;
+    }
+
+    a {
+        text-decoration: none;
     }
   </style>
 
@@ -65,56 +67,106 @@
 
 
   
-<div class="container-fluid mx-auto mt-5" style="width: 50%">    
-  <div class="row content">
-        <div class="container-fluid">
+    <div class="container-fluid mt-5 col-md-6 col-md-offset-1 col-sm-12 col-xs-12">    
+            <div class="container-fluid">
 
-            <ol class="breadcrumb font-weight-bold h2" style="margin-bottom: 2em;">
-                <img src="/icons/icon128.png" style="height: 1.1em; vertical-align: top; padding-right: 10px;">
-                <li class="breadcrumb-item font-weight-bold">Venom <span class="divider"></span></li>
-                <li class="breadcrumb-item font-weight-bold">Options</li>
-            </ol>
-  
-             
+                <ol class="breadcrumb font-weight-bold h2" style="margin-bottom: 2em;">
+                    <img src="/icons/icon128.png" style="height: 1.1em; vertical-align: top; padding-right: 10px;">
+                    <li class="breadcrumb-item fw-bold">Venom <span class="divider"></span></li>
+                    <li class="breadcrumb-item fw-normal"><a href="/src/bookmarks/bookmarks.html" class="text-muted" style="text-decoration: none;">My Bookmarks</a><span class="divider"></span></li>
+                    <li class="breadcrumb-item fw-normal text-decoration-underline">Options<span class="divider"></span></li>
+                </ol>
+    
+                
+                <div class="card">
+                    <h3 class="card-header">
+                        ⌨️ Hotkey Setup
+                    </h3>
+                    <div class="card-body">
+                        <p class="card-text h5 pb-2">Configure a hotkey so that Venom knows which keys to listen for (default: Alt+Q).</p>
+                        <p class="card-text h5 pb-2">See 
+                            Extensions
+                            <img src="/icons/extensions.png" style="height: 1.2em; vertical-align: bottom; padding-right: 10px;">
 
-            <div class="card">
-                <h3 class="card-header">
-                    <img src="/icons/sources/spotify.svg" style="height: 1.1em; vertical-align: center;">
-                    Spotify Integration
-                </h3>
-                <div class="card-body">
-                    <p class="card-text">Linking your Spotify account with Venom allows you to save the currently playing song to your bookmarks when the hotkey is pressed.</p>
-                    <button type="button" class="btn btn-success" id="loginSpotifyButton" style="margin-bottom: 0.5em;"></button>
+                            <img src="/icons/arrow.svg" style="height: 0.8em; vertical-align: center; padding-right: 10px;">
+                            <img src="/icons/settings.svg" style="height: 1em; vertical-align: center;"> 
+
+                            Manage Extensions
+                            <img src="/icons/arrow.svg" style="height: 0.8em; vertical-align: center; padding-right: 10px;"> 
+                            <img src="/icons/menu.svg" style="height: 0.8em; vertical-align: center; padding-right: 10px;">
+                            <img src="/icons/arrow.svg" style="height: 0.8em; vertical-align: center; padding-right: 10px;"> 
+                            Keyboard shortcuts
+                            <img src="/icons/arrow.svg" style="height: 0.8em; vertical-align: center; padding-right: 10px;"> 
+                            Venom
+                        </p>
+                        <p class="card-text h5"><span class="fst-italic">In Chrome </span>- Only listens when Chrome is in focus.</p>
+                        <p class="card-text h5"><span class="fst-italic">Global </span>- Listens when Chrome is not the active window.</p>
+
+
+
+                    </div>
                 </div>
+            
+
+                <div class="card">
+                    <h3 class="card-header">
+                        🔎 Platforms to Scan
+                    </h3>
+                    <div class="card-body">
+                        <p class="card-text h5">Choose which platforms you want Venom to check when you press the hotkey:</p>
+
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="spotifyToggle">
+                            <label class="form-check-label h5" for="flexSwitchCheckDefault">Spotify</label>
+                            <img src="/icons/sources/spotify.svg" style="height: 1.1em; vertical-align: center; padding-left: 8px;">
+                        </div>
+                            <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="youtubeToggle">
+                            <label class="form-check-label h5" for="flexSwitchCheckDefault">YouTube</label>
+                            <img src="/icons/sources/youtube.svg" style="height: 1.1em; vertical-align: center; padding-left: 8px;">
+                        </div>
+                            <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="soundcloudToggle">
+                            <label class="form-check-label h5" for="flexSwitchCheckDefault">SoundCloud</label>
+                            <img src="/icons/sources/soundcloud.svg" style="height: 1.1em; vertical-align: center; padding-left: 8px;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-header">
+                        <img src="/icons/sources/spotify.svg" style="height: 1.1em; vertical-align: center;">
+                        Spotify Integration
+                    </h3>
+                    <div class="card-body h5">
+                        <p class="card-text">Linking your Spotify account with Venom allows you to save the currently playing song to your bookmarks when the hotkey is pressed.</p>
+                        <button type="button" class="btn btn-success" id="loginSpotifyButton" style="margin-bottom: 0.5em;"></button>
+                        <div class="alert alert-info" id="signOutNotification" role="alert" hidden="true">
+                            Successfully signed out of Spotify.
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
-            <div class="card">
-                <h3 class="card-header">
-                    🔎 Platforms to Scan
-                </h3>
-                <div class="card-body">
-                    <p class="card-text">Choose which platforms you want Venom to scan:</p>
+    </div>
 
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" id="spotifyToggle">
-                        <label class="form-check-label" for="flexSwitchCheckDefault">Spotify</label>
-                    </div>
-                        <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" id="youtubeToggle">
-                        <label class="form-check-label" for="flexSwitchCheckDefault">YouTube</label>
-                    </div>
-                        <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" id="soundcloudToggle">
-                        <label class="form-check-label" for="flexSwitchCheckDefault">SoundCloud</label>
-                    </div>
+    <footer class="footer">
+        <div class="container-fluid col-md-6 pb-3 col-md-offset-1 col-sm-12 col-xs-12">
+            <div class="row" >
+                <div class="col-6 text-start">
+                    <a href="https://chrome.google.com/webstore/detail/venom-hotkey-bookmarker-f/nlcikdibmohlofehpflokeedegjlmnmh?hl=en&authuser=1">Venom on the Chrome Web Store</a>
                 </div>
+
+                <div class="col-6 text-end">
+                    Made with ❤️ by Josh Houghton
+                </div>
+                    
             </div>
 
         </div>
-        
+    </footer>
 
-  </div>
-</div>
 
 
 </body>

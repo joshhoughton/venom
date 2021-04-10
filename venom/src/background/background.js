@@ -1,4 +1,6 @@
 var url;
+var tab;
+var returnData;
 var nonce = ''
 var codeChallenge;
 var spotifyApi = new SpotifyWebApi();
@@ -10,16 +12,22 @@ const SPOTIFY_SCOPE = "user-read-playback-state"
 
 
 function saveTimestamp(result) {
+    console.log(result)
     /*
         Method to write a video object to Chrome's local 
         storage. 
     */
+
+    url = result.url || ""
+    
     if (url.includes("youtube.com")){
         [title, timestampString, url] = Parser.parseYouTube(result)
     } else if (url.includes("soundcloud.com")) {
         [title, timestampString, url] = Parser.parseSoundCloud(result)
     } else if (url.includes("spotify.com")){
         [title, timestampString, url] = Parser.parseSpotify(result)
+    } else {
+        return
     }
 
     // Create video object
@@ -64,87 +72,43 @@ function saveTimestamp(result) {
 // Listens for hotkey
 chrome.commands.onCommand.addListener(function(command) {
     if (command === "record-timestamp"){
+        chrome.storage.sync.get(['spotifyEnabled', 'youtubeEnabled', 'soundcloudEnabled', 'spotifyCredentials'], async function(result) {
+            spotifyCredentials = result.spotifyCredentials
 
-        // Find tabs that are audible YouTube videos or Soundcloud songs
-        chrome.tabs.query({
-            audible: true,
-            url: [
-                "*://*.youtube.com/watch?v=*",
-                "*://*.soundcloud.com/*"
-            ]
-        }, (tabs) => {
-            if (tabs.length > 0){
-                url = tabs[0].url
-                if (url.includes("youtube.com")){
-                    code = `[document.getElementsByTagName("video")[0].currentTime, document.getElementsByTagName('title')[0].text]`
-                } else if (url.includes("soundcloud.com")){
-                    code = `[document.getElementsByClassName("playbackTimeline__timePassed")[0].children[1].innerText
-                    , document.getElementsByTagName('title')[0].text, document.getElementsByClassName("playbackSoundBadge__titleLink sc-truncate")[0].href]`
-                }
-
-                var executing = chrome.tabs.executeScript(
-                    tabs[0].id,
-                    {code: code},
-                    saveTimestamp,
-                );
-            } else {
-                chrome.storage.sync.get(['spotifyCredentials'], function(result) {
-                    spotifyCredentials = result.spotifyCredentials
-                    console.log(spotifyCredentials)
-        
-                    if (spotifyCredentials){
-                        if (spotifyCredentials.expires < new Date().getTime()){
-                             params = new URLSearchParams({
-                                client_id: SPOTIFY_CLIENT_ID,
-                                grant_type: "refresh_token",
-                                refresh_token: spotifyCredentials.refresh_token
-                            })
-        
-                            console.log(new URLSearchParams(params).toString())
-            
-                            req = new Request("https://accounts.spotify.com/api/token", {
-                                method: "POST",
-                                headers: {
-                                    'Content-Type': "application/x-www-form-urlencoded"
-                                },
-                                body: params.toString()
-                            })
-                            fetch(req)
-                            .then(res => res.json())
-                            .then(data => {
-                                data.expires = new Date().getTime() + data.expires_in * 1000
-                                spotifyCredentials = data
-                                chrome.storage.sync.set({spotifyCredentials: data}, function() {});
-                                console.log(data)
-                            })
-                        }
-        
-                        spotifyApi.setAccessToken(spotifyCredentials.access_token)
-                        spotifyApi.getMyCurrentPlaybackState().then((data) => {
-                            if (data) {
-                                url = data.item.external_urls.spotify
-                                saveTimestamp(data)
-                            } else {
-                                chrome.notifications.create('', {
-                                    title: 'Error',
-                                    message: `Cannot find a playing instance of YouTube, SoundCloud or Spotify.`,
-                                    type: 'basic',
-                                    iconUrl: 'icons/icon128.png'
-                                })
-                            }
-                        })
-                    } else {
-                        chrome.notifications.create('', {
-                            title: 'Error',
-                            message: `Cannot find a playing YouTube or SoundCloud tab.`,
-                            type: 'basic',
-                            iconUrl: 'icons/icon128.png'
-                        });
-                    }
-                    
-                });
+            platforms = {
+                spotifyEnabled: (result.spotifyEnabled == undefined) ? false : result.spotifyEnabled, 
+                youtubeEnabled: (result.youtubeEnabled == undefined) ? true : result.youtubeEnabled,
+                soundcloudEnabled: (result.soundcloudEnabled == undefined) ? true : result.soundcloudEnabled 
             }
-        })
+            
+
+            if (Object.values(platforms).every((s) => !s)){
+                chrome.notifications.create('', {
+                    title: 'Error',
+                    message: `No platforms are selected! See Venom -> Options.`,
+                    type: 'basic',
+                    iconUrl: 'icons/icon128.png'
+                });
+
+                return
+            }
+
+            Promise.all([
+                (platforms.spotifyEnabled) ? Spotify.getSpotifyPlaying(spotifyCredentials) : {}, 
+                (platforms.youtubeEnabled) ? YouTube.getYouTubePlaying() : {}, 
+                (platforms.soundcloudEnabled) ? Soundcloud.getSoundcloudPlaying() : {}
+            ]).then((values) => {
+                values = values.filter(obj => obj && Object.keys(obj).length !== 0 && obj.constructor === Object)
+                
+                if (values.length > 0){
+                    saveTimestamp(values[0])
+                } else {
+                    noMusicFound(platforms)
+                }
+            })
+            
+ 
+        }) 
     }
 });
 
@@ -196,8 +160,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                         redirect_uri: SPOTIFY_REDIRECT_URI,
                         code_verifier: nonce
                     })
-
-                    console.log(new URLSearchParams(params).toString())
     
                     req = new Request("https://accounts.spotify.com/api/token", {
                         method: "POST",
@@ -218,7 +180,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                             type: 'basic',
                             iconUrl: 'icons/icon128.png'
                         });
-                        console.log(data)
                     })
 
             }});
@@ -228,11 +189,20 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     } else if (request.message.title === 'logout') {
         chrome.storage.sync.remove(['spotifyCredentials'], () => {})
         sendResponse('success');
-        console.log('logged out')
     } else if (request.message.title === 'changePlatform') {
         changes = request.message.data
 
         chrome.storage.sync.set(changes, function() {});
+
+    } else if (request.message.title === 'deleteTimestamp') {
+        timestamp = request.message.timestamp
+
+        timestamps = chrome.storage.local.get(['timestamps'], (result) => {
+            timestamps = chrome.storage.local.set({
+                'timestamps': result.timestamps.filter((t) => t[2] != timestamp)
+            }, (result) => {})
+        })
+
 
     }
         

@@ -11,7 +11,9 @@ document.addEventListener("DOMContentLoaded", function(){
                 chrome.runtime.sendMessage({ message: {
                     title: 'logout'
                 } }, function (response) {
-                    location.reload()
+                    console.log("LOGGED OUT")
+                    button.disabled = true
+                    document.getElementById("signOutNotification").hidden = false;
                 });
             });
         } else {
@@ -21,6 +23,8 @@ document.addEventListener("DOMContentLoaded", function(){
                 chrome.runtime.sendMessage({ message: {
                     title: 'login'
                 } }, function (response) {
+                    button.disabled = true
+
                     location.reload()
                 });
             });
@@ -29,12 +33,10 @@ document.addEventListener("DOMContentLoaded", function(){
     })
 
     chrome.storage.sync.get(['spotifyEnabled', 'youtubeEnabled', 'soundcloudEnabled'], function(result) {
-        console.log(result)
         spotifyEnabled = (result.spotifyEnabled == undefined) ? false : result.spotifyEnabled
         youtubeEnabled = (result.youtubeEnabled == undefined) ? true : result.youtubeEnabled
         soundcloudEnabled = (result.soundcloudEnabled == undefined) ? true : result.soundcloudEnabled
 
-        console.log(spotifyEnabled, youtubeEnabled, soundcloudEnabled)
 
         spotifyToggle = document.getElementById("spotifyToggle")
         spotifyToggle.checked = spotifyEnabled
@@ -51,7 +53,6 @@ document.addEventListener("DOMContentLoaded", function(){
         soundcloudToggle = document.getElementById("soundcloudToggle")
         soundcloudToggle.checked = soundcloudEnabled
         soundcloudToggle.addEventListener('change', (e) => {
-            console.log(e.target.checked)
             chrome.storage.sync.set({'soundcloudEnabled': e.target.checked}, function(result) {})
         })
 
