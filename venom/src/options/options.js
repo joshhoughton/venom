@@ -11,7 +11,6 @@ document.addEventListener("DOMContentLoaded", function(){
                 chrome.runtime.sendMessage({ message: {
                     title: 'logout'
                 } }, function (response) {
-                    console.log("LOGGED OUT")
                     button.disabled = true
                     document.getElementById("signOutNotification").hidden = false;
                 });

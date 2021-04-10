@@ -112,13 +112,13 @@ document.addEventListener("DOMContentLoaded", function(){
             button.className = "btn btn-outline-danger btn-sm"
 
             button.onclick = e => {
+                row.hidden = true
                 chrome.runtime.sendMessage({ message: {
                     title: 'deleteTimestamp',
                     timestamp: element[2]
                 } }, function (response) {
                     console.log("deleted")
                     console.log(chrome.runtime.lastError)
-                    row.hidden = true
                 });
             }
             button.appendChild(img);

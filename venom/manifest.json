@@ -1,8 +1,8 @@
 {
-  "name": "Venom - Spotify, YT & SC Bookmarker",
-  "version": "0.1.1",
+  "name": "Venom - Spotify and YouTube Bookmarker",
+  "version": "0.2",
   "manifest_version": 2,
-  "description": "Instantly save the timestamp of a playing YouTube video or SoundCloud track, on screen or in the background.",
+  "description": "Instantly save the timestamp of playing Spotify, YouTube or SoundCloud media, on screen or in the background.",
   "content_security_policy": "script-src 'self' https://cdn.jsdelivr.net https://ajax.googleapis.com; object-src 'self';",
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlcoshtReFunAaBJjZfIZ6DNWaF/1qXtIsAAii7AlTBzq5LcmMxrcsMi7gdIgjRRIL+tHX1Nv46FBe2Y9zvy8VqmJXZmQyQWiDAzdOUujeEqnPToPncDkxV+V3OZLRPwQaeOr1DgJsBOHRXnJ6rF2k/YJ1x8898zW8h3AGr8oU/euBnDIsJQ7H4ffyyJmAhWFILQAtteMVVoX7wNyXNEJGzHaSHndXsty6JnhZzo2pY2HQtySoZOzMxyOyl/hZS2dJl3OMx4mQX471vZcTD3bIONW3GvhGuvklpYBnAhqibwzAZelfhhmJiie/BsuqzPdafmrUW+uX90K/qBNf7YnRQIDAQAB",
   "icons": {
