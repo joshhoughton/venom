@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", function(){
     document.getElementById("exportButton").addEventListener("click", (e) => {
         chrome.storage.local.get(['timestamps'], function(result) {
             timestamps = result.timestamps
-            console.log(timestamps)
 
             if (timestamps == undefined){
                 return
@@ -48,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
             cell.setAttribute("colspan", "5")
             cell.className = "text-center"
-            text = document.createTextNode("nothing to see here yet :) - get started at the Options page");
+            text = document.createTextNode("Nothing to see here yet! Get started at the Options page.");
 
             cell.appendChild(text)
             row.appendChild(cell)
@@ -117,8 +116,6 @@ document.addEventListener("DOMContentLoaded", function(){
                     title: 'deleteTimestamp',
                     timestamp: element[2]
                 } }, function (response) {
-                    console.log("deleted")
-                    console.log(chrome.runtime.lastError)
                 });
             }
             button.appendChild(img);

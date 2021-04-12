@@ -2,17 +2,16 @@ Spotify = {
     getSpotifyPlaying: (spotifyCredentials) => {
         if (spotifyCredentials == undefined){
             chrome.notifications.create('', {
-                title: 'Error',
+                title: 'No Spotify account linked!',
                 message: `Please link a Spotify account at Venom -> Options.`,
                 type: 'basic',
-                iconUrl: 'icons/icon128.png'
+                iconUrl: 'icons/icon.png'
             });
 
-            return {}
+            return -1
         }
           
         if (spotifyCredentials.expires < new Date().getTime()){
-            console.log('expired')
 
             params = new URLSearchParams({
                 client_id: SPOTIFY_CLIENT_ID,
@@ -37,7 +36,6 @@ Spotify = {
             })
         }
 
-        console.log(spotifyCredentials.access_token)
         
         spotifyApi.setAccessToken(spotifyCredentials.access_token)
         return spotifyApi.getMyCurrentPlaybackState().then((data => {
@@ -64,11 +62,9 @@ YouTube = {
                 "*://*.youtube.com/watch?v=*",
             ]
         }, (tabs) => {
-            console.log(tabs)
             if (tabs.length > 0){
                 code = `[document.getElementsByTagName("video")[0].currentTime, 
                             document.getElementsByTagName('title')[0].text]`
-                            console.log(tab)
                 chrome.tabs.executeScript(
                     tabs[0].id,
                     {code: code},
@@ -86,7 +82,6 @@ YouTube = {
                     },
                 );
             } else {
-                console.log("reg")
                 returnData = {}
             }
         })
@@ -94,7 +89,6 @@ YouTube = {
         return new Promise(function (resolve, reject) {
             (function waitForReturnData(){
                 if (returnData != undefined) {
-                    console.log(returnData)
                     return resolve(returnData)
                 };
                 setTimeout(waitForReturnData, 30);

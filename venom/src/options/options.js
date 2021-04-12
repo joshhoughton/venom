@@ -1,34 +1,80 @@
-document.addEventListener("DOMContentLoaded", function(){  
+var changeLoginState
+
+function loggedOutState(e){
+    // Remove all event listeners
+
     button = document.getElementById("loginSpotifyButton")
-    
-    chrome.storage.sync.get(['spotifyCredentials'], function(result) {
-        spotifyCredentials = result.spotifyCredentials
-        if (spotifyCredentials){
-            button.innerText = "Logout of Spotify"
-            button.title = "Spotify account is already linked"
+    notification = document.getElementById("notification")
 
-            button.addEventListener('click', () => {
-                chrome.runtime.sendMessage({ message: {
-                    title: 'logout'
-                } }, function (response) {
-                    button.disabled = true
-                    document.getElementById("signOutNotification").hidden = false;
-                });
-            });
-        } else {
+    changeLoginState = () => {
+        chrome.runtime.sendMessage({ message: {
+            title: 'login'
+        } }, function (response) {
+            notification.hidden = false;
+            if (response.success){
+                spotifyToggle = document.getElementById("spotifyToggle")
+
+                spotifyToggle.checked = true
+                notification.className = "alert alert-success"
+                notification.innerText = "Successfully logged into Spotify"
+
+                button.innerText = "Logout of Spotify"
+                loggedInState()
+            } else {
+                notification.className = "alert alert-danger"
+                if (response.error){
+                    notification.innerText = `Failed to login to Spotify: ${response.error}`
+                } else {
+                    notification.innerText = "Failed to login to Spotify."
+                }
+            }
+        });
+    };
+}
+
+function loggedInState(e) {
+    // Remove all event listeners
+
+    button = document.getElementById("loginSpotifyButton")
+    notification = document.getElementById("notification")
+
+
+    changeLoginState = () => {
+        chrome.runtime.sendMessage({ message: {
+            title: 'logout'
+        } }, function (response) {
+            console.log(response)
+            spotifyToggle = document.getElementById("spotifyToggle")
+
+            spotifyToggle.checked = false
+
+            notification.hidden = false;
+            notification.className = "alert alert-success"
+
+            notification.innerText = "Logged out of Spotify."
+        
             button.innerText = "Login to Spotify"
+            
+            loggedOutState()
+        });
+    }
 
-            button.addEventListener('click', () => {
-                chrome.runtime.sendMessage({ message: {
-                    title: 'login'
-                } }, function (response) {
-                    button.disabled = true
+}
 
-                    location.reload()
-                });
-            });
+function listener(){
+    changeLoginState();
+}
 
-        }
+
+document.addEventListener("DOMContentLoaded", function(){  
+    chrome.storage.sync.get(['spotifyCredentials'], function(result) {
+        button = document.getElementById("loginSpotifyButton")
+
+        button.addEventListener('click', listener)
+
+        result.spotifyCredentials ? loggedInState() : loggedOutState()
+        button.innerText = result.spotifyCredentials ? "Logout of Spotify" : "Login to Spotify"
+
     })
 
     chrome.storage.sync.get(['spotifyEnabled', 'youtubeEnabled', 'soundcloudEnabled'], function(result) {

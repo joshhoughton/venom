@@ -6,7 +6,7 @@
   "content_security_policy": "script-src 'self' https://cdn.jsdelivr.net https://ajax.googleapis.com; object-src 'self';",
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlcoshtReFunAaBJjZfIZ6DNWaF/1qXtIsAAii7AlTBzq5LcmMxrcsMi7gdIgjRRIL+tHX1Nv46FBe2Y9zvy8VqmJXZmQyQWiDAzdOUujeEqnPToPncDkxV+V3OZLRPwQaeOr1DgJsBOHRXnJ6rF2k/YJ1x8898zW8h3AGr8oU/euBnDIsJQ7H4ffyyJmAhWFILQAtteMVVoX7wNyXNEJGzHaSHndXsty6JnhZzo2pY2HQtySoZOzMxyOyl/hZS2dJl3OMx4mQX471vZcTD3bIONW3GvhGuvklpYBnAhqibwzAZelfhhmJiie/BsuqzPdafmrUW+uX90K/qBNf7YnRQIDAQAB",
   "icons": {
-    "128": "icons/icon128.png"
+    "128": "icons/icon.png"
   },
   "default_locale": "en",
   "background": {
@@ -20,7 +20,7 @@
   },
   "options_page": "src/options/options.html",
   "browser_action": {
-      "default_icon": "icons/icon128.png",
+      "default_icon": "icons/icon.png",
       "title": "See your Bookmarks"
   },
   "permissions": [

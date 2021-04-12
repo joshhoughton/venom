@@ -130,6 +130,6 @@ function noMusicFound(platforms){
         title: 'Error',
         message: `Cannot find a playing instance of ${platformsMessage}.`,
         type: 'basic',
-        iconUrl: 'icons/icon128.png'
+        iconUrl: 'icons/icon.png'
     })
 }

@@ -12,7 +12,6 @@ const SPOTIFY_SCOPE = "user-read-playback-state"
 
 
 function saveTimestamp(result) {
-    console.log(result)
     /*
         Method to write a video object to Chrome's local 
         storage. 
@@ -43,7 +42,7 @@ function saveTimestamp(result) {
         timestamps = result.timestamps
         
         if (timestamps === undefined){
-            chrome.storage.local.set({timestamps: []}, function() {});
+            chrome.storage.local.set({timestamps: [video]}, function() {});
         } else {
             timestamps.push(video)
             chrome.storage.local.set({timestamps: timestamps}, function() {});
@@ -65,7 +64,7 @@ function saveTimestamp(result) {
         title: 'Bookmarked',
         message: `${timestampString} - ${title}`,
         type: 'basic',
-        iconUrl: 'icons/icon128.png'
+        iconUrl: 'icons/icon.png'
     });
 }
 
@@ -74,6 +73,8 @@ chrome.commands.onCommand.addListener(function(command) {
     if (command === "record-timestamp"){
         chrome.storage.sync.get(['spotifyEnabled', 'youtubeEnabled', 'soundcloudEnabled', 'spotifyCredentials'], async function(result) {
             spotifyCredentials = result.spotifyCredentials
+
+            console.log(spotifyCredentials)
 
             platforms = {
                 spotifyEnabled: (result.spotifyEnabled == undefined) ? false : result.spotifyEnabled, 
@@ -87,7 +88,7 @@ chrome.commands.onCommand.addListener(function(command) {
                     title: 'Error',
                     message: `No platforms are selected! See Venom -> Options.`,
                     type: 'basic',
-                    iconUrl: 'icons/icon128.png'
+                    iconUrl: 'icons/icon.png'
                 });
 
                 return
@@ -98,6 +99,13 @@ chrome.commands.onCommand.addListener(function(command) {
                 (platforms.youtubeEnabled) ? YouTube.getYouTubePlaying() : {}, 
                 (platforms.soundcloudEnabled) ? Soundcloud.getSoundcloudPlaying() : {}
             ]).then((values) => {
+                console.log(values)
+
+                // If user has already been given a notification about linking Spotify account.
+                if (values [0] == -1){
+                    return
+                }
+
                 values = values.filter(obj => obj && Object.keys(obj).length !== 0 && obj.constructor === Object)
                 
                 if (values.length > 0){
@@ -124,8 +132,10 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
     if (request.message.title === 'login') {
+        console.log("attempting to login")
         
         // Generate Nonce
+        nonce = ""
         for (let i=0; i<6; i++){
             nonce += Math.random().toString(36).substring(2, 15)
         }
@@ -145,8 +155,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                         title: 'Error',
                         message: `Failed to login to Spotify: ${chrome.runtime.lastError.message}`,
                         type: 'basic',
-                        iconUrl: 'icons/icon128.png'
+                        iconUrl: 'icons/icon.png'
                     });
+                    sendResponse({success: false, error: chrome.runtime.lastError.message})
+
                 } else {
                     url = new URL(redirect_uri)
                     
@@ -172,23 +184,37 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                     fetch(req)
                     .then(res => res.json())
                     .then(data => {
-                        data.expires = new Date().getTime() + data.expires_in * 1000
-                        chrome.storage.sync.set({spotifyCredentials: data}, function() {});
-                        chrome.notifications.create('', {
-                            title: 'Spotify Linked',
-                            message: `Your Spotify account is now linked with Venom!`,
-                            type: 'basic',
-                            iconUrl: 'icons/icon128.png'
-                        });
+                        if (data.error != undefined){
+                            sendResponse({
+                                success: false, 
+                                error: [data.error, data.error_description].join(" - ")
+                            })
+                        } else {
+                            data.expires = new Date().getTime() + data.expires_in * 1000
+                            chrome.storage.sync.set({
+                                spotifyCredentials: data,
+                                spotifyEnabled: true
+                            }, function() {});
+                            chrome.notifications.create('', {
+                                title: 'Spotify Linked',
+                                message: `Your Spotify account is now linked with Venom!`,
+                                type: 'basic',
+                                iconUrl: 'icons/icon.png'
+                            });
+                            console.log('success')
+                            sendResponse({success: true})
+                        }
                     })
-
             }});
-        }, 1000);
+        }, 200);
+        
+        return true
 
-        return true;
     } else if (request.message.title === 'logout') {
         chrome.storage.sync.remove(['spotifyCredentials'], () => {})
-        sendResponse('success');
+        chrome.storage.local.set({'spotifyEnabled': false}, (result) => {})
+        sendResponse({success: true})
+
     } else if (request.message.title === 'changePlatform') {
         changes = request.message.data
 
