@@ -215,16 +215,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         chrome.storage.local.set({'spotifyEnabled': false}, (result) => {})
         sendResponse({success: true})
 
-    } else if (request.message.title === 'changePlatform') {
-        changes = request.message.data
-
-        chrome.storage.sync.set(changes, function() {});
-
     } else if (request.message.title === 'deleteTimestamp') {
         timestamp = request.message.timestamp
 
-        timestamps = chrome.storage.local.get(['timestamps'], (result) => {
-            timestamps = chrome.storage.local.set({
+        chrome.storage.local.get(['timestamps'], (result) => {
+            chrome.storage.local.set({
                 'timestamps': result.timestamps.filter((t) => t[2] != timestamp)
             }, (result) => {})
         })
