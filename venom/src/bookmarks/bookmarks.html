@@ -53,6 +53,10 @@
     a {
         text-decoration: none;
     }
+    .breadcrumb-item+.breadcrumb-item::before {
+        content: var(--bs-breadcrumb-divider, "|");
+    }
+
 
     
   </style>
@@ -63,7 +67,7 @@
 
 
   
-<div class="container-fluid mt-5 col-md-6 col-md-offset-1 col-sm-12 col-xs-12 content" style="padding-bottom: 2vh;">    
+<div class="container-fluid mt-5 col-xl-7 col-lg-8 col-md-8 col-sm-10 col-xs-12 col-md-offset-1" style="padding-bottom: 2vh;">    
   <div class="row content">
 
         <div class="container-fluid">
@@ -72,8 +76,8 @@
                     <ol class="breadcrumb font-weight-bold h2">
                         <img src="/icons/icon.png" style="height: 1.1em; vertical-align: top; padding-right: 10px;">
                         <li class="breadcrumb-item fw-bold">Venom <span class="divider"></span></li>
-                        <li class="breadcrumb-item fw-normal text-decoration-underline">My Bookmarks<span class="divider"></span></li>
-                        <li class="breadcrumb-item fw-normal"><a href="/src/options/options.html" class="text-muted" style="text-decoration: none;">Options</a><span class="divider"></span></li>
+                        <li class="breadcrumb-item fw-normal">My Bookmarks<span class="divider"></span></li>
+                        <li class="breadcrumb-item fw-normal"><a href="/src/options/options.html" class="text-muted" style="text-decoration: none; font-size: 0.8em">Options</a></li>
 
                     </ol>
                 </div>
@@ -90,9 +94,9 @@
             <thead>
                 <tr>
                     <th scope="col" style="width: 1%"></th>
-                    <th scope="col" style="width: 70%">Title</th>
-                    <th scope="col" style="width: 10%">Timestamp</th>
-                    <th scope="col" style="width: 18%">Time</th>
+                    <th scope="col" style="width: 70%">🔖</th>
+                    <th scope="col" style="width: 10%">⏱️</th>
+                    <th scope="col" style="width: 18%">📅</th>
                     <th scope="col" style="width: 1%"></th>
                 </tr> 
             </thead>

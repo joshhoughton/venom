@@ -60,7 +60,7 @@ function saveTimestamp(result) {
     })
 
     // Notify of success
-    chrome.notifications.create('', {
+    Notifications.create('', {
         title: 'Bookmarked',
         message: `${timestampString} - ${title}`,
         type: 'basic',
@@ -81,10 +81,9 @@ chrome.commands.onCommand.addListener(function(command) {
                 youtubeEnabled: (result.youtubeEnabled == undefined) ? true : result.youtubeEnabled,
                 soundcloudEnabled: (result.soundcloudEnabled == undefined) ? true : result.soundcloudEnabled 
             }
-            
 
             if (Object.values(platforms).every((s) => !s)){
-                chrome.notifications.create('', {
+                Notifications.create('', {
                     title: 'Error',
                     message: `No platforms are selected! See Venom -> Options.`,
                     type: 'basic',
@@ -151,7 +150,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                 interactive: true
             }, function (redirect_uri) {
                 if (chrome.runtime.lastError || redirect_uri.includes('access_denied')) {
-                    chrome.notifications.create('', {
+                    Notifications.create('', {
                         title: 'Error',
                         message: `Failed to login to Spotify: ${chrome.runtime.lastError.message}`,
                         type: 'basic',
@@ -195,7 +194,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                                 spotifyCredentials: data,
                                 spotifyEnabled: true
                             }, function() {});
-                            chrome.notifications.create('', {
+                            Notifications.create('', {
                                 title: 'Spotify Linked',
                                 message: `Your Spotify account is now linked with Venom!`,
                                 type: 'basic',
@@ -228,3 +227,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     }
         
 });
+
+chrome.runtime.onInstalled.addListener((details) => {    
+    if (details.reason == 'install'){
+        chrome.tabs.create({url: chrome.runtime.getURL("src/options/options.html")})
+    }
+ })

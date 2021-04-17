@@ -1,7 +1,7 @@
 Spotify = {
     getSpotifyPlaying: (spotifyCredentials) => {
         if (spotifyCredentials == undefined){
-            chrome.notifications.create('', {
+            Notifications.create('', {
                 title: 'No Spotify account linked!',
                 message: `Please link a Spotify account at Venom -> Options.`,
                 type: 'basic',

@@ -77,10 +77,13 @@ document.addEventListener("DOMContentLoaded", function(){
 
     })
 
-    chrome.storage.sync.get(['spotifyEnabled', 'youtubeEnabled', 'soundcloudEnabled'], function(result) {
+    chrome.storage.sync.get(['spotifyEnabled', 'youtubeEnabled', 'soundcloudEnabled', 'notificationsEnabled'], function(result) {
         spotifyEnabled = (result.spotifyEnabled == undefined) ? false : result.spotifyEnabled
         youtubeEnabled = (result.youtubeEnabled == undefined) ? true : result.youtubeEnabled
         soundcloudEnabled = (result.soundcloudEnabled == undefined) ? true : result.soundcloudEnabled
+
+        notificationsEnabled = (result.notificationsEnabled == undefined) ? false : result.notificationsEnabled
+
 
 
         spotifyToggle = document.getElementById("spotifyToggle")
@@ -101,6 +104,11 @@ document.addEventListener("DOMContentLoaded", function(){
             chrome.storage.sync.set({'soundcloudEnabled': e.target.checked}, function(result) {})
         })
 
+        notificationsToggle = document.getElementById("notificationsToggle")
+        notificationsToggle.checked = notificationsEnabled
+        notificationsToggle.addEventListener('change', (e) => {
+            chrome.storage.sync.set({'notificationsEnabled': e.target.checked}, function(result) {})
+        })
 
     })
 

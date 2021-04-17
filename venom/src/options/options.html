@@ -59,6 +59,9 @@
     a {
         text-decoration: none;
     }
+    .breadcrumb-item+.breadcrumb-item::before {
+        content: var(--bs-breadcrumb-divider, "|");
+    }
   </style>
 
 </head>
@@ -67,21 +70,21 @@
 
 
   
-    <div class="container-fluid mt-5 col-md-6 col-md-offset-1 col-sm-12 col-xs-12">    
+    <div class="container-fluid mt-5 col-xl-7 col-lg-8 col-md-8 col-sm-10 col-xs-12 col-md-offset-1">    
             <div class="container-fluid">
 
                 <ol class="breadcrumb font-weight-bold h2" style="margin-bottom: 2em;">
                     <img src="/icons/icon.png" style="height: 1.1em; vertical-align: top; padding-right: 10px;">
                     <li class="breadcrumb-item fw-bold">Venom <span class="divider"></span></li>
-                    <li class="breadcrumb-item fw-normal"><a href="/src/bookmarks/bookmarks.html" class="text-muted" style="text-decoration: none;">My Bookmarks</a><span class="divider"></span></li>
-                    <li class="breadcrumb-item fw-normal text-decoration-underline">Options<span class="divider"></span></li>
+                    <li class="breadcrumb-item fw-normal"><a href="/src/bookmarks/bookmarks.html" class="text-muted" style="text-decoration: none; font-size: 0.8em;">My Bookmarks</a><span class="divider"></span></li>
+                    <li class="breadcrumb-item fw-normal">Options<span class="divider"></span></li>
                 </ol>
     
                 
                 <div class="card">
                     <h4 class="card-header">
-                        ⌨️ Hotkey Setup
-                    </h4>
+                        ⌨️ Setup Bookmark Key
+                     </h4>
                     <div class="card-body">
                         <p class="card-text pb-2">Configure a hotkey so that Venom knows which keys to listen for (default: Alt+Q).</p>
                         <p class="card-text pb-2">See 
@@ -101,10 +104,44 @@
                             <img src="/icons/arrow.svg" style="height: 0.8em; vertical-align: center; padding-right: 10px;"> 
                             <span class="fst-italic">Bookmark playing media</span>.
                         </p>
-                        <p class="card-text"><span class="fst-italic">In Chrome </span>- Only listens when Chrome is in focus.</p>
-                        <p class="card-text"><span class="fst-italic">Global </span>- Listens even when Chrome is not the active window.</p>
+                        <p class="card-text"><span class="fst-italic">In Chrome </span>- Only listens when Chrome is in focus.<br>
+                        <span class="fst-italic">Global </span>- Listens even when Chrome is not the active window.</p>
 
 
+
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h4 class="card-header">
+                        🔔 Notifications
+                    </h4>
+                    <div class="card-body">
+                        <p class="card-text">Enable or disable notifications from Venom.</p>
+
+                        <div class="form-check form-switch pb-1">
+                            <input class="form-check-input" type="checkbox" id="notificationsToggle">
+                            <label class="form-check-label h6" for="flexSwitchCheckDefault">Desktop Notifications</label>
+                        </div>
+                        <p class="card-text mb-1">
+                            Ensure that notifications are enabled for Google Chrome: 
+                        </p>
+                        <p class="card-text">
+                            <b>Windows</b>: Settings 
+                            <img src="/icons/arrow.svg" style="height: 0.8em; vertical-align: center; padding-right: 10px;"> 
+                            System 
+                            <img src="/icons/arrow.svg" style="height: 0.8em; vertical-align: center; padding-right: 10px;"> 
+                            Notifications & actions 
+                            <img src="/icons/arrow.svg" style="height: 0.8em; vertical-align: center; padding-right: 10px;">
+                            Google Chrome 
+                            <br>
+                            <b>Mac</b>: System Preferences
+                            <img src="/icons/arrow.svg" style="height: 0.8em; vertical-align: center; padding-right: 10px;"> 
+                            Notifications
+                            <img src="/icons/arrow.svg" style="height: 0.8em; vertical-align: center; padding-right: 10px;"> 
+                            Google Chrome
+
+                        </p>
 
                     </div>
                 </div>

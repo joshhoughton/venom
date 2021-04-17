@@ -126,10 +126,21 @@ function noMusicFound(platforms){
         platforms.soundcloudEnabled ? "SoundCloud" : ""
     ].filter(Boolean).join(", ")
 
-    chrome.notifications.create('', {
+    Notifications.create('', {
         title: 'Error',
         message: `Cannot find a playing instance of ${platformsMessage}.`,
         type: 'basic',
         iconUrl: 'icons/icon.png'
     })
+}
+
+Notifications = {
+    create: (notificationId, options) => {
+        chrome.storage.sync.get(['notificationsEnabled'], (result) => {
+            if (result.notificationsEnabled){
+                chrome.notifications.create(notificationId, options)
+            }
+        });
+
+    }
 }
