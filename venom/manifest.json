@@ -1,6 +1,6 @@
 {
   "name": "Venom - Spotify + YouTube Bookmarker",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "manifest_version": 2,
   "description": "Instantly save the timestamp of playing Spotify, YouTube or SoundCloud media, on screen or in the background.",
   "content_security_policy": "script-src 'self' https://cdn.jsdelivr.net https://ajax.googleapis.com; object-src 'self';",

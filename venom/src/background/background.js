@@ -7,7 +7,7 @@ var spotifyApi = new SpotifyWebApi();
 
 const SPOTIFY_CLIENT_ID = "f319265e92254279b9f28d543794ef84"
 const SPOTIFY_REDIRECT_URI = chrome.identity.getRedirectURL("spotify")
-const SPOTIFY_SCOPE = "user-read-playback-state"
+const SPOTIFY_SCOPE = "user-read-private user-read-playback-state playlist-read-private playlist-read-collaborative playlist-modify-public" 
 
 
 
@@ -85,7 +85,7 @@ chrome.commands.onCommand.addListener(function(command) {
             if (Object.values(platforms).every((s) => !s)){
                 Notifications.create('', {
                     title: 'Error',
-                    message: `No platforms are selected! See Venom -> Options.`,
+                    message: `No platforms are enabled! See Venom -> Options.`,
                     type: 'basic',
                     iconUrl: 'icons/icon.png'
                 });
@@ -224,6 +224,73 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         })
 
 
+    } else if (request.message.title === 'saveToPlaylist') {
+        uris = request.message.uris
+        
+        // Remove duplicates
+        uris = uris.filter((value, index, array) => { 
+            return array.indexOf(value) == index;
+        })
+        
+
+        chrome.storage.sync.get(['spotifyCredentials'],  function(result) {
+            spotifyCredentials = result.spotifyCredentials
+
+            if (!spotifyCredentials){
+                sendResponse({success: false})
+            } else {
+                Promise.resolve(Spotify.refreshAccessToken(spotifyCredentials)).then((data) => {
+                    spotifyApi.setAccessToken(data.access_token)
+    
+                    spotifyApi.getMe({}, (err, data) => {
+                        user_id = data.id
+    
+                        spotifyApi.getUserPlaylists({}, (err, data) => {
+                            playlists = data.items.filter(p => p.name == "Venom Bookmarks")
+        
+                            if (playlists.length > 0){
+                                playlistId = playlists[0].id
+
+                                spotifyApi.getPlaylistTracks(playlistId, {}, (err, data) => {
+                                    existingTrackUris = data.items.map(t => t.track.uri)
+
+                                    uris = uris.filter((value, index, array) => { 
+                                        return !existingTrackUris.includes(value);
+                                    })
+
+                                    spotifyApi.addTracksToPlaylist(playlistId, uris, {}, (err, data) => {
+                                        sendResponse({success: true})
+    
+                                    })
+
+                                })
+    
+                            } else {
+                                spotifyApi.createPlaylist(user_id, {name: "Venom Bookmarks"}, (err, data) => {
+                                    playlistId = data.id
+    
+                                    if (err == undefined){
+                                        spotifyApi.addTracksToPlaylist(playlistId, uris, {}, (err, data) => {
+                                            sendResponse({success: true})
+                                        })
+                                    }
+                                })
+                            }
+                            
+                        })
+    
+    
+                    })
+                    // spotifyApi.createPlaylist('me', {name: "Venom Bookmarks"}, (err, data) => {
+                    //     console.log(data, err)
+                    // })
+    
+                })
+            }
+
+        })
+
+        return true;
     }
         
 });

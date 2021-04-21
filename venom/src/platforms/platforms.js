@@ -1,18 +1,6 @@
 Spotify = {
-    getSpotifyPlaying: (spotifyCredentials) => {
-        if (spotifyCredentials == undefined){
-            Notifications.create('', {
-                title: 'No Spotify account linked!',
-                message: `Please link a Spotify account at Venom -> Options.`,
-                type: 'basic',
-                iconUrl: 'icons/icon.png'
-            });
-
-            return -1
-        }
-          
+    refreshAccessToken: (spotifyCredentials) => {
         if (spotifyCredentials.expires < new Date().getTime()){
-
             params = new URLSearchParams({
                 client_id: SPOTIFY_CLIENT_ID,
                 grant_type: "refresh_token",
@@ -27,27 +15,43 @@ Spotify = {
                 }, 
                 body: params.toString()
             })
-            fetch(req)
+            return fetch(req)
             .then(res => res.json())
             .then(data => {
                 data.expires = new Date().getTime() + data.expires_in * 1000
-                spotifyCredentials = data
                 chrome.storage.sync.set({spotifyCredentials: data}, function() {});
+
+                return data
             })
+        } else {
+            return spotifyCredentials
+        }
+    },
+    getSpotifyPlaying: (spotifyCredentials) => {
+        if (spotifyCredentials == undefined){
+            Notifications.create('', {
+                title: 'No Spotify account linked!',
+                message: `Please link a Spotify account at Venom -> Options.`,
+                type: 'basic',
+                iconUrl: 'icons/icon.png'
+            });
+
+            return -1
         }
 
-        
-        spotifyApi.setAccessToken(spotifyCredentials.access_token)
-        return spotifyApi.getMyCurrentPlaybackState().then((data => {
-            data.platform = "spotify"
-            if (data != ""){
-                data.url = data.item.external_urls.spotify
-                return data
-            } else {
-                return {}
-            }
-        }), (error) => {
-            console.log(error)
+        return Promise.resolve(Spotify.refreshAccessToken(spotifyCredentials)).then((data) => {
+            spotifyApi.setAccessToken(data.access_token)
+            return spotifyApi.getMyCurrentPlaybackState().then((data => {
+                data.platform = "spotify"
+                if (data != ""){
+                    data.url = data.item.external_urls.spotify
+                    return data
+                } else {
+                    return {}
+                }
+            }), (error) => {
+                console.log(error)
+            })
         })
     }
 }

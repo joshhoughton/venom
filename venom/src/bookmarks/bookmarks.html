@@ -72,7 +72,7 @@
 
         <div class="container-fluid">
             <div class="row justify-content-between" style="padding-bottom: 2em;">
-                <div class="col-11">
+                <div class="col-10">
                     <ol class="breadcrumb font-weight-bold h2">
                         <img src="/icons/icon.png" style="height: 1.1em; vertical-align: top; padding-right: 10px;">
                         <li class="breadcrumb-item fw-bold">Venom <span class="divider"></span></li>
@@ -82,9 +82,24 @@
                     </ol>
                 </div>
 
-                <div class="col-1 text-right">
-                    <button type="button" class="btn btn-outline-primary" id="exportButton">Export</button>
-                </div>
+                <div class="dropdown col-2">
+                    <div class="spinner-border spinner-border-sm" role="status" id="exportSpinner" hidden="true">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                       Export to
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                      <li><a href="#" class="dropdown-item" id="exportSpotifyButton">Spotify Playlist</a></li>
+                      <li><a href="#" class="dropdown-item" id="exportCSVButton">CSV</a></li>
+                    </ul>
+                  </div>
+                <!-- <div class="col-1 text-right">
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <li><a class="dropdown-item" href="#" id="exportButton">Spotify Playlist</a></li>
+                        <li><a class="dropdown-item" href="#">CSV file</a></li>
+                    </ul>
+                </div> -->
 
               </div>
             

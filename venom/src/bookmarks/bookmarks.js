@@ -1,7 +1,9 @@
 
 document.addEventListener("DOMContentLoaded", function(){  
-    document.getElementById("exportButton").addEventListener("click", (e) => {
+    document.getElementById("exportCSVButton").onclick =  (e) => {
         chrome.storage.local.get(['timestamps'], function(result) {
+            document.getElementById("exportSpinner").hidden = false
+
             timestamps = result.timestamps
 
             if (timestamps == undefined){
@@ -29,10 +31,51 @@ document.addEventListener("DOMContentLoaded", function(){
                 url: "data:text/csv;charset=utf-8,Title,Timestamp,Date,Link\n" + timestamps,
                 filename: "VenomBookmarks.csv",
             });
+            
+            setTimeout(function(){
+                document.getElementById("exportSpinner").hidden = true
+            }, 1500)
+            
+        });
+    };
+
+    document.getElementById("exportSpotifyButton").onclick =  (e) => {
+        chrome.storage.local.get(['timestamps'], function(result) {
+            timestamps = result.timestamps
+
+            if (timestamps == undefined){
+                return
+            }
+    
+    
+            // Sort timestamps by creation timestamp
+            timestamps.sort((a,b) => (a[2] < b[2]) ? 1 : ((b[2] < a[2]) ? -1 : 0))
+
+            // Get first 100 Spotify links
+            spotifyBookmarks = timestamps.filter(e => e[3].includes("spotify.com")).slice(0,99)
+
+            // Convert Song URL to spotify:track:ID
+            uris = spotifyBookmarks.map(e => `spotify:track:${e[3].split("/").reverse()[0]}`)
+
+            console.log(uris)
+            document.getElementById("exportSpinner").hidden = false
+
+            chrome.runtime.sendMessage({ message: {
+                title: 'saveToPlaylist',
+                uris: uris
+            } }, function (response) {
+                setTimeout(function(){
+                    document.getElementById("exportSpinner").hidden = true
+                }, 2000);
+
+
+            });
+
+
     
             
         });
-    });
+    };
 
 
     var tableBody = document.getElementById("bookmarkTableBody")
