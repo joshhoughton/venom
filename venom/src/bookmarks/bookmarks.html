@@ -68,40 +68,36 @@
 
   
 <div class="container-fluid mt-5 col-xl-7 col-lg-8 col-md-8 col-sm-10 col-xs-12 col-md-offset-1" style="padding-bottom: 2vh;">    
-  <div class="row content">
+  <div class="content">
 
         <div class="container-fluid">
             <div class="row justify-content-between" style="padding-bottom: 2em;">
-                <div class="col-10">
+                <div class="col">
                     <ol class="breadcrumb font-weight-bold h2">
                         <img src="/icons/icon.png" style="height: 1.1em; vertical-align: top; padding-right: 10px;">
                         <li class="breadcrumb-item fw-bold">Venom <span class="divider"></span></li>
                         <li class="breadcrumb-item fw-normal">My Bookmarks<span class="divider"></span></li>
                         <li class="breadcrumb-item fw-normal"><a href="/src/options/options.html" class="text-muted" style="text-decoration: none; font-size: 0.8em">Options</a></li>
-
                     </ol>
                 </div>
+            </div>
 
-                <div class="dropdown col-2">
-                    <div class="spinner-border spinner-border-sm" role="status" id="exportSpinner" hidden="true">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                    <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+            <div class="row float-end">
+
+
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle btn-sm justify-content-end" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                        Export to
+                        <div class="spinner-border spinner-border-sm" role="status" id="exportSpinner" hidden="true">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                       <li><a href="#" class="dropdown-item" id="exportSpotifyButton">Spotify Playlist</a></li>
                       <li><a href="#" class="dropdown-item" id="exportCSVButton">CSV</a></li>
                     </ul>
                   </div>
-                <!-- <div class="col-1 text-right">
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <li><a class="dropdown-item" href="#" id="exportButton">Spotify Playlist</a></li>
-                        <li><a class="dropdown-item" href="#">CSV file</a></li>
-                    </ul>
-                </div> -->
-
-              </div>
+            </div>
             
         </div>
           

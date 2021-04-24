@@ -248,6 +248,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                         spotifyApi.getUserPlaylists({}, (err, data) => {
                             playlists = data.items.filter(p => p.name == "Venom Bookmarks")
         
+                            // Check if playlist already exists
                             if (playlists.length > 0){
                                 playlistId = playlists[0].id
 
