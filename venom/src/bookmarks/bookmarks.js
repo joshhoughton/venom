@@ -1,6 +1,17 @@
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-197007778-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = 'https://ssl.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
 
 document.addEventListener("DOMContentLoaded", function(){  
     document.getElementById("exportCSVButton").onclick =  (e) => {
+        _gaq.push(['_trackEvent', "export", 'csv'])     
+
         chrome.storage.local.get(['timestamps'], function(result) {
             document.getElementById("exportSpinner").hidden = false
 
@@ -32,21 +43,22 @@ document.addEventListener("DOMContentLoaded", function(){
                 filename: "VenomBookmarks.csv",
             });
             
-            setTimeout(function(){
+            setTimeout(() => {
                 document.getElementById("exportSpinner").hidden = true
             }, 1500)
             
         });
     };
 
-    document.getElementById("exportSpotifyButton").onclick =  (e) => {
+    document.getElementById("exportSpotifyButton").onclick = (e) => {
+        _gaq.push(['_trackEvent', "export", 'spotify']);
+
         chrome.storage.local.get(['timestamps'], function(result) {
             timestamps = result.timestamps
 
             if (timestamps == undefined){
                 return
             }
-    
     
             // Sort timestamps by creation timestamp
             timestamps.sort((a,b) => (a[2] < b[2]) ? 1 : ((b[2] < a[2]) ? -1 : 0))
@@ -67,13 +79,7 @@ document.addEventListener("DOMContentLoaded", function(){
                 setTimeout(function(){
                     document.getElementById("exportSpinner").hidden = true
                 }, 2000);
-
-
-            });
-
-
-    
-            
+            }); 
         });
     };
 
